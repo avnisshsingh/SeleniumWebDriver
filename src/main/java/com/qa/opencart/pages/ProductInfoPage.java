@@ -13,6 +13,7 @@ import com.qa.opencart.utils.ElementUtil;
 
 public class ProductInfoPage {
 
+	@SuppressWarnings("unused")
 	private WebDriver driver;
 	private ElementUtil eleUtil;
 
@@ -20,6 +21,7 @@ public class ProductInfoPage {
 
 	private By productImages = By.cssSelector("ul.thumbnails img");
 	private By productMetaData = By.xpath("(//div[@id='content']//ul[@class='list-unstyled'])[position()=1]/li");
+	@SuppressWarnings("unused")
 	private By productPriceData = By.xpath("(//div[@id='content']//ul[@class='list-unstyled'])[position()=2]/li");
 
 	public ProductInfoPage(WebDriver driver) {

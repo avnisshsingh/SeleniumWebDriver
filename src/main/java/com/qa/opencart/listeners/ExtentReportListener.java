@@ -100,6 +100,7 @@ public class ExtentReportListener implements ITestListener {
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
+	@SuppressWarnings("unused")
 	public synchronized void onTestFailure(ITestResult result) {
 		System.out.println((result.getMethod().getMethodName() + " failed!"));
 		String methodName = result.getMethod().getMethodName();
@@ -109,6 +110,7 @@ public class ExtentReportListener implements ITestListener {
 		test.get().getModel().setEndTime(getTime(result.getEndMillis()));
 	}
 
+	@SuppressWarnings("unused")
 	public synchronized void onTestSkipped(ITestResult result) {
 		System.out.println((result.getMethod().getMethodName() + " skipped!"));
 		String methodName = result.getMethod().getMethodName();
