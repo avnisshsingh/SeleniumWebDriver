@@ -15,9 +15,12 @@ public class CodeByOtherDev {
 		driver.get("https://www.tutorialspoint.com/selenium/practice/broken-links.php");
 		String url = driver.findElement(By.xpath("//a[text()='Click Here for Broken Link']")).getAttribute("href");
 		System.err.println(url);
-		Thread.sleep(5000);
-		driver.quit();
 
+		//Creating URL Object and using in to() method
+		URL myUrl = new URL("https://www.saucedemo.com/");
+		driver.navigate().to(myUrl);
+		System.out.println(driver.getCurrentUrl());
+		driver.quit();
 	}
 
 }
