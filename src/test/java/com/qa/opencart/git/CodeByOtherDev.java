@@ -21,6 +21,6 @@ public class CodeByOtherDev {
 		URL myUrl = new URL("https://www.saucedemo.com/");
 		driver.navigate().to(myUrl);
 		System.out.println(driver.getCurrentUrl());
-		driver.quit();
+		driver.close();
 	}
 }
