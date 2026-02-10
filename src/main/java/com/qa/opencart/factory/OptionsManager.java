@@ -7,63 +7,110 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class OptionsManager {
-	private Properties prop;
-	private ChromeOptions co;
-	private FirefoxOptions fo;
-	private EdgeOptions eo;
 
-	public OptionsManager(Properties prop) {
-		this.prop = prop;
-	}
+    private Properties prop;
 
-	public ChromeOptions getChromeOptions() {
-		co = new ChromeOptions();
-		if (Boolean.parseBoolean(prop.getProperty("headless"))) {
-			co.addArguments("--headless=new");
-		}
-		if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
-			co.addArguments("--incognito");
-			co.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});
-		}
+    public OptionsManager(Properties prop) {
+        this.prop = prop;
+    }
 
-		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
-			String browserVersion = prop.getProperty("browserversion");
-			//co.setBrowserVersion(browserVersion);
-			co.setPlatformName("linux");
-			co.setCapability("enableVNC", true);
-			co.setCapability("name", "OpenAppTest - " + prop.getProperty("testname"));
+    // ===================== CHROME =====================
+    public ChromeOptions getChromeOptions() {
 
-		}
-		return co;
-	}
+        ChromeOptions options = new ChromeOptions();
 
-	public FirefoxOptions getFirefoxOptions() {
-		fo = new FirefoxOptions();
-		if (Boolean.parseBoolean(prop.getProperty("headless"))) {
-			fo.addArguments("--headless=new");
-		}
-		if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
-			fo.addArguments("--incognito");
-		}
-		if (Boolean.parseBoolean(prop.getProperty("remote"))) {
-			//String browserVersion = prop.getProperty("browserversion");
-			//fo.setBrowserVersion(browserVersion);
-			fo.setPlatformName("linux");
-			fo.setCapability("enableVNC", true);
+        // ----- Mandatory for Jenkins / CI -----
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
 
-		}
-		return fo;
-	}
+        // Headless
+        if (Boolean.parseBoolean(prop.getProperty("headless"))) {
+            options.addArguments("--headless=new");
+        }
 
-	public EdgeOptions getEdgeOptions() {
-		eo = new EdgeOptions();
-		if (Boolean.parseBoolean(prop.getProperty("headless"))) {
-			eo.addArguments("--headless=new");
-		}
-		if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
-			eo.addArguments("--incognito");
-			eo.setExperimentalOption("excludeSwitches", new String[] {"enable-automation"});
-		}
-		return eo;
-	}
+        // Incognito
+        if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
+            options.addArguments("--incognito");
+            options.setExperimentalOption(
+                    "excludeSwitches",
+                    new String[] { "enable-automation" });
+        }
+
+        // Remote execution (Grid / Docker)
+        if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+
+            String browserVersion = prop.getProperty("browserVersion");
+
+            if (browserVersion != null && !browserVersion.trim().isEmpty()) {
+                options.setBrowserVersion(browserVersion);
+            }
+
+            options.setPlatformName("linux");
+            options.setCapability("enableVNC", true);
+            options.setCapability(
+                    "name",
+                    "OpenAppTest - " + prop.getProperty("testname"));
+        }
+
+        return options;
+    }
+
+    // ===================== FIREFOX =====================
+    public FirefoxOptions getFirefoxOptions() {
+
+        FirefoxOptions options = new FirefoxOptions();
+
+        // Headless
+        if (Boolean.parseBoolean(prop.getProperty("headless"))) {
+            options.addArguments("--headless");
+        }
+
+        // Private mode
+        if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
+            options.addArguments("-private");
+        }
+
+        // Remote execution
+        if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+
+            String browserVersion = prop.getProperty("browserVersion");
+
+            if (browserVersion != null && !browserVersion.trim().isEmpty()) {
+                options.setBrowserVersion(browserVersion);
+            }
+
+            options.setPlatformName("linux");
+            options.setCapability("enableVNC", true);
+        }
+
+        return options;
+    }
+
+    // ===================== EDGE =====================
+    public EdgeOptions getEdgeOptions() {
+
+        EdgeOptions options = new EdgeOptions();
+
+        // Jenkins / CI flags
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+
+        // Headless
+        if (Boolean.parseBoolean(prop.getProperty("headless"))) {
+            options.addArguments("--headless=new");
+        }
+
+        // InPrivate (NOT incognito)
+        if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
+            options.addArguments("--inprivate");
+            options.setExperimentalOption(
+                    "excludeSwitches",
+                    new String[] { "enable-automation" });
+        }
+
+        return options;
+    }
 }
