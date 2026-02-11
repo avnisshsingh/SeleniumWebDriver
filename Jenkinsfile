@@ -12,17 +12,10 @@ tools {
         {
             steps
             {
-                 git 'https://github.com/jglick/simple-maven-project-with-tests.git'
+                 git 'https://github.com/spring-projects/spring-petclinic.git'
                  bat "mvn -Dmaven.test.failure.ignore=true clean package"
             }
-            post 
-            {
-                success
-                {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                    archiveArtifacts 'target/*.jar'
-                }
-            }
+           
         }
         
         
