@@ -47,13 +47,12 @@ tools {
         stage('Publish Allure Reports') {
            steps {
                 script {
-                    allure([
-                        includeProperties: false,
-                        jdk: '',
-                        properties: [],
-                        reportBuildPolicy: 'ALWAYS',
-                        results: [[path: '/allure-results']]
-                    ])
+						 allure([
+   						 commandline: 'allure',
+   						 includeProperties: false,
+    					 reportBuildPolicy: 'ALWAYS',
+   						 results: [[path: 'target/allure-results']]
+])
                 }
             }
         }
