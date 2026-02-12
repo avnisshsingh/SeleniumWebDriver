@@ -55,7 +55,7 @@ public class OptionsManager {
             options.setCapability("se:vncEnabled", true);
             options.setCapability(
                     "se:name",
-                    "OpenAppTest - " + prop.getProperty("testname"));
+                    "Opencart Automation : " + prop.getProperty("testname"));
         }
 
         return options;
@@ -91,7 +91,7 @@ public class OptionsManager {
             options.setCapability("se:vncEnabled", true);
             options.setCapability(
                     "se:name",
-                    "OpenAppTest - " + prop.getProperty("testname"));
+                    "Opencart Automation : " + prop.getProperty("testname"));
         }
 
         return options;
@@ -135,7 +135,7 @@ public class OptionsManager {
             options.setCapability("se:vncEnabled", true);
             options.setCapability(
                     "se:name",
-                    "OpenAppTest - " + prop.getProperty("testname"));
+                    "Opencart Automation : " + prop.getProperty("testname"));
         }
 
         return options;
