@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -15,6 +17,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.qa.opencart.errors.AppError;
 import com.qa.opencart.exception.FrameworkException;
@@ -47,11 +50,26 @@ public class DriverFactory {
 		browserName = browserName.toLowerCase();
 
 		if (browserName.equals("chrome")) {
-			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				// remote run:
+				init_remoteDriver("chrome");
+			} else {
+				tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			}
 		} else if (browserName.equals("firefox")) {
-			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				// remote run:
+				init_remoteDriver("firefox");
+			} else {
+				tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			}
 		} else if (browserName.equals("edge")) {
-			tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+			if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+				// remote run:
+				init_remoteDriver("edge");
+			} else {
+				tlDriver.set(new EdgeDriver(optionsManager.getEdgeOptions()));
+			}
 		} else {
 			System.out.println("Please pass the right browser name: " + browserName);
 			LOG.error("Please pass the right browser name : " + browserName);
@@ -83,12 +101,12 @@ public class DriverFactory {
 
 		// String envName = System.getenv("env");// stage/uat/qa/dev
 		String envName = System.getProperty("env");// stage/uat/qa/dev
-		System.out.println("-----> Running test cases on environment: -----> " + envName);
+		System.out.println("-----> Running test cases on Environment: -----> " + envName);
 		// LOG.info("-----> Running test cases on environment: -----> " + envName);
 		if (envName == null) {
 			System.out.println(
 					"No environment is given..... Hence running it on default environment with config.properties.....");
-			LOG.info("-----> Running test cases on environment: ----->" + envName);
+			LOG.info("-----> Running test cases on Environment: ----->" + " Default ");
 			try {
 				ip = new FileInputStream("./src/test/resources/config/config.properties");
 			} catch (FileNotFoundException e) {
@@ -116,7 +134,7 @@ public class DriverFactory {
 					break;
 
 				default:
-					System.out.println("please pass the right environment name...." + envName);
+					System.err.println("Please Pass the right Environment Name...." + envName);
 					throw new FrameworkException(AppError.ENV_NOT_FOUND);
 				// break;
 				}
@@ -153,6 +171,43 @@ public class DriverFactory {
 			e.printStackTrace();
 		}
 		return path;
+
+	}
+
+	/*
+	 * remote execution
+	 */
+	private void init_remoteDriver(String browser) {
+
+		System.out.println("Running test cases on Remote GRID Machine....with Browser: " + browser);
+
+		if (browser.equals("chrome")) {
+			try {
+				tlDriver.set(
+						new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		else if (browser.equals("firefox")) {
+			try {
+				tlDriver.set(
+						new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getFirefoxOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		else if (browser.equals("edge")) {
+			try {
+				tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getEdgeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		} else {
+			System.out.println("Please pass the right browser for remote execution...." + browser);
+		}
 
 	}
 }

@@ -20,7 +20,8 @@ public class LoginPageTest extends BaseTest {
 	@Description("login page title test.....")
 	@Severity(SeverityLevel.MINOR)
 	@Test(priority = 1)
-	public void loginPageTitleTest() {
+	public void loginPageTitleTest() throws InterruptedException {
+		Thread.sleep(5000);
 		String actualTitle = loginPage.getLoginPageTitle();
 		Assert.assertEquals(actualTitle, AppConstants.LOGIN_PAGE_TITLE);
 	}

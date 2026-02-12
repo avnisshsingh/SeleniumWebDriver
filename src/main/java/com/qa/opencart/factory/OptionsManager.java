@@ -1,5 +1,7 @@
 package com.qa.opencart.factory;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -19,26 +21,26 @@ public class OptionsManager {
 
         ChromeOptions options = new ChromeOptions();
 
-        // ----- Mandatory for Jenkins / CI -----
+        // ---- CI / Docker Stability Flags ----
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
         options.addArguments("--remote-allow-origins=*");
 
-        // Headless
+        // Headless Mode
         if (Boolean.parseBoolean(prop.getProperty("headless"))) {
             options.addArguments("--headless=new");
         }
 
-        // Incognito
+        // Incognito Mode
         if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
             options.addArguments("--incognito");
             options.setExperimentalOption(
                     "excludeSwitches",
-                    new String[] { "enable-automation" });
+                    new String[]{"enable-automation"});
         }
 
-        // Remote execution (Grid / Docker)
+        // Remote Execution (Docker Grid)
         if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 
             String browserVersion = prop.getProperty("browserVersion");
@@ -48,9 +50,11 @@ public class OptionsManager {
             }
 
             options.setPlatformName("linux");
-            options.setCapability("enableVNC", true);
+
+            // ✅ W3C Compliant Grid Capabilities
+            options.setCapability("se:vncEnabled", true);
             options.setCapability(
-                    "name",
+                    "se:name",
                     "OpenAppTest - " + prop.getProperty("testname"));
         }
 
@@ -67,12 +71,12 @@ public class OptionsManager {
             options.addArguments("--headless");
         }
 
-        // Private mode
+        // Private Mode
         if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
             options.addArguments("-private");
         }
 
-        // Remote execution
+        // Remote Execution
         if (Boolean.parseBoolean(prop.getProperty("remote"))) {
 
             String browserVersion = prop.getProperty("browserVersion");
@@ -82,7 +86,12 @@ public class OptionsManager {
             }
 
             options.setPlatformName("linux");
-            options.setCapability("enableVNC", true);
+
+            // ✅ W3C Compliant Grid Capabilities
+            options.setCapability("se:vncEnabled", true);
+            options.setCapability(
+                    "se:name",
+                    "OpenAppTest - " + prop.getProperty("testname"));
         }
 
         return options;
@@ -93,7 +102,7 @@ public class OptionsManager {
 
         EdgeOptions options = new EdgeOptions();
 
-        // Jenkins / CI flags
+        // CI / Docker Stability Flags
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--disable-gpu");
@@ -103,12 +112,30 @@ public class OptionsManager {
             options.addArguments("--headless=new");
         }
 
-        // InPrivate (NOT incognito)
+        // InPrivate Mode
         if (Boolean.parseBoolean(prop.getProperty("incognito"))) {
             options.addArguments("--inprivate");
             options.setExperimentalOption(
                     "excludeSwitches",
-                    new String[] { "enable-automation" });
+                    new String[]{"enable-automation"});
+        }
+
+        // Remote Execution
+        if (Boolean.parseBoolean(prop.getProperty("remote"))) {
+
+            String browserVersion = prop.getProperty("browserVersion");
+
+            if (browserVersion != null && !browserVersion.trim().isEmpty()) {
+                options.setBrowserVersion(browserVersion);
+            }
+
+            options.setPlatformName("linux");
+
+            // ✅ W3C Compliant Grid Capabilities
+            options.setCapability("se:vncEnabled", true);
+            options.setCapability(
+                    "se:name",
+                    "OpenAppTest - " + prop.getProperty("testname"));
         }
 
         return options;
