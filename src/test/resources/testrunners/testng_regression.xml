@@ -12,18 +12,18 @@
 	</listeners>
 
 	<test name="Login Test Chrome">
-		<parameter name="browser" value="chrome" />
+	<!-- 	<parameter name="browser" value="chrome" />
 		<parameter name="browserversion" value="140" />
-		<parameter name="testname" value="Login Test Chrome" />
+		<parameter name="testname" value="Login Test Chrome" /> -->
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
 	</test> <!-- Test -->
 
 	<test name="Login Test Firefox">
-		<parameter name="browser" value="firefox" />
+<!-- 		<parameter name="browser" value="firefox" />
 		<parameter name="browserversion" value="140" />
-		<parameter name="testname" value="Login Test Firefox" />
+		<parameter name="testname" value="Login Test Firefox" /> -->
 		<classes>
 			<class name="com.qa.opencart.tests.LoginPageTest" />
 		</classes>
