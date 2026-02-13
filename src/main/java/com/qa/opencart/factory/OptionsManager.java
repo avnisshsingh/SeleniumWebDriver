@@ -1,7 +1,5 @@
 package com.qa.opencart.factory;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Properties;
 
 import org.openqa.selenium.chrome.ChromeOptions;

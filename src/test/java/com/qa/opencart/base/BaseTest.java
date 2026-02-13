@@ -25,15 +25,15 @@ public class BaseTest {
 	public ProductInfoPage productInfoPage;
 	public RegisterPage registerPage;
 
-	@Parameters({ "browser" })
+	@Parameters({ "browser", "browserversion", "testname" })
 	@BeforeTest
-	public void setup(String browser) {
+	public void setup(String browser, String browserVersion, String testName) throws InterruptedException {
 		df = new DriverFactory();
 		prop = df.initProp();
 		if (browser != null) {
 			prop.setProperty("browser", browser);
-			// prop.setProperty("browserversion", browserVersion);
-			// prop.setProperty("testname", testName);
+			prop.setProperty("browserversion", browserVersion);
+			prop.setProperty("testname", testName);
 		}
 		driver = df.initDriver(prop);
 		loginPage = new LoginPage(driver);
@@ -41,7 +41,7 @@ public class BaseTest {
 
 	@AfterTest
 	public void tearDown() throws InterruptedException {
-		Thread.sleep(5000);
+		Thread.sleep(1000);
 		driver.quit();
 	}
 }
