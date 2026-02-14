@@ -7,6 +7,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
+import org.testng.asserts.SoftAssert;
 
 import com.qa.opencart.factory.DriverFactory;
 import com.qa.opencart.pages.AccountsPage;
@@ -25,6 +26,7 @@ public class BaseTest {
 	public SearchResultsPage searchResultsPage;
 	public ProductInfoPage productInfoPage;
 	public RegisterPage registerPage;
+	public SoftAssert softAssert;
 
 	@Parameters({ "browser", "browserversion", "testname" })
 	@BeforeTest
@@ -39,11 +41,12 @@ public class BaseTest {
 		}
 		driver = df.initDriver(prop);
 		loginPage = new LoginPage(driver);
+		softAssert = new SoftAssert();
 	}
 
 	@AfterTest
 	public void tearDown() throws InterruptedException {
-		Thread.sleep(1000);
+		Thread.sleep(2300);
 		driver.quit();
 	}
 }

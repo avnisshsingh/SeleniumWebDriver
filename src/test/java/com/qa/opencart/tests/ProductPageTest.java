@@ -46,9 +46,10 @@ public class ProductPageTest extends BaseTest {
 		searchResultsPage = accPage.performSearch("Macbook");
 		productInfoPage = searchResultsPage.selectProduct("MacBook Pro");
 		Map<String, String> actMetaDataMap = productInfoPage.getProductMetaData();
-		Assert.assertEquals(actMetaDataMap.get("Brand"), "Apple");
-		Assert.assertEquals(actMetaDataMap.get("Product Code"), "Product 18");
-		Assert.assertEquals(actMetaDataMap.get("Reward Points"), "800");
-		Assert.assertEquals(actMetaDataMap.get("Availability"), "Out Of Stock");
+		softAssert.assertEquals(actMetaDataMap.get("Brand"), "Apple");
+		softAssert.assertEquals(actMetaDataMap.get("Product Code"), "Product 18");
+		softAssert.assertEquals(actMetaDataMap.get("Reward Points"), "800");
+		softAssert.assertEquals(actMetaDataMap.get("Availability"), "Out Of Stock");
+		softAssert.assertAll();
 	}
 }
